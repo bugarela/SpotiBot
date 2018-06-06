@@ -6,11 +6,11 @@ def showArtistas(artists):
         if (j < len(artists) - 2):
             resposta += ", "
         elif (j == len(artists) - 2):
-            resposta += " and "
+            resposta += " e "
     return resposta
 
 def showAlbum(album):
-    return album['name'] + " by " + showArtistas(album['artists'])
+    return '_' + album['name'] + "_ - " + showArtistas(album['artists'])
 
 def showAlbums(albums):
     resposta = ""
@@ -19,7 +19,7 @@ def showAlbums(albums):
     return resposta
 
 def showMusica(musica):
-    return musica['name'] + " by " + showArtistas(musica['artists'])
+    return '_' + musica['name'] + "_ - " + showArtistas(musica['artists'])
 
 def showMusicas(musicas):
     resposta = ""

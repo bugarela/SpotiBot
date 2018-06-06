@@ -18,11 +18,13 @@ def processaResposta(textoDaMsg):
     if(textoDaMsg.find("/start")!=-1):
         return "Uau, você achou meu bot!"
 
-    elif(textoDaMsg.find("/lançamentos")!=-1):
+    elif(textoDaMsg.find("/lancamentos")!=-1):
         return funcoes.lancamentos()
 
     elif(textoDaMsg.find("/similar")!=-1):
         busca = textoDaMsg.replace("/similar ","")
+        if(busca.find("/similar")!=-1):
+            return "Diga-me uma música ou artista que você goste!\nExemplo: /similar Let it Be"
         return funcoes.similar(busca)
 
     else:
@@ -44,8 +46,8 @@ def recebendoMsg(msg):
             resposta = processaResposta(msg['text'])
             first_name = str(msg['chat']['first_name'])
 
-            telegram.sendMessage(chatID, resposta)
-            print("%s disse: \"%s\". Respondi com: \"%s\"" % (str(first_name), str(msg['text']), str(resposta)))
+            telegram.sendMessage(chatID, resposta, parse_mode='markdown')
+            #print("%s disse: \"%s\". Respondi com: \"%s\"" % (str(first_name), str(msg['text']), str(resposta)))
 
 
 telegram.message_loop(recebendoMsg)
