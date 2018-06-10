@@ -5,7 +5,7 @@ import simplejson as json
 from spotipy.oauth2 import SpotifyClientCredentials
 from fuzzywuzzy import fuzz
 
-import formatos
+from formatos import *
 
 from dotenv import load_dotenv, find_dotenv
 load_dotenv('credenciais.env')
@@ -17,16 +17,11 @@ def lancamentos():
     sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
     retornoSpotipy = sp.new_releases(limit=10)
 
-    resposta = "Últimos lançamentos internacionais:\n\n"
-
     if retornoSpotipy:
         albums = retornoSpotipy['albums']
-        resposta += formatos.showAlbums(albums['items'])
+        return internacionais.format(showItensEnumerados(albums['items']))
 
-    else:
-        resposta = "Oops, algo deu errado :("
-
-    return resposta
+    return erroPadrao
 
 def similar(nome):
 
@@ -38,10 +33,10 @@ def similar(nome):
 
     if musica:
         return recomendacoesMusica(musica)
-    elif artista:
+    if artista:
         return recomendacoesArtista(artista)
-    else:
-        return "Não encontrei esse artista :("
+
+    return erroBusca.format(nome)
 
 def procuraMusica(nome):
 
@@ -51,8 +46,8 @@ def procuraMusica(nome):
 
     if len(items) > 0:
         return items[0]
-    else:
-        return None
+
+    return None
 
 def procuraArtista(nome):
 
@@ -62,8 +57,8 @@ def procuraArtista(nome):
 
     if len(items) > 0:
         return items[0]
-    else:
-        return None
+
+    return None
 
 def recomendacoesArtista(artista):
 
@@ -71,12 +66,10 @@ def recomendacoesArtista(artista):
     retornoSpotipy = sp.recommendations(seed_artists = [artista['id']],limit=10)
 
     if retornoSpotipy:
-        resposta = "Recomendações para quem gosta de " + artista['name'] + ":\n\n"
-        resposta += formatos.showMusicas(retornoSpotipy['tracks'])
-    else:
-        resposta = "Oops, algo deu errado :("
+        return recomendacoes.format(artista['name'],showItens(retornoSpotipy['tracks']))
 
-    return resposta
+    return erroPadrao
+
 
 def recomendacoesMusica(musica):
 
@@ -84,9 +77,6 @@ def recomendacoesMusica(musica):
     retornoSpotipy = sp.recommendations(seed_tracks = [musica['id']],limit=10)
 
     if retornoSpotipy:
-        resposta = "Recomendações para quem gosta de " + formatos.showMusica(musica) + ":\n\n"
-        resposta += formatos.showMusicas(retornoSpotipy['tracks'])
-    else:
-        resposta = "Oops, algo deu errado :("
+        return recomendacoes.format(showItem(musica),showItens(retornoSpotipy['tracks']))
 
-    return resposta
+    return erroPadrao

@@ -1,28 +1,27 @@
-def showArtistas(artists):
-    resposta = ""
-    for j, artist in enumerate(artists):
-        resposta += artist['name']
+# -*- coding: utf-8 -*-
 
-        if (j < len(artists) - 2):
-            resposta += ", "
-        elif (j == len(artists) - 2):
-            resposta += " e "
-    return resposta
+padrao = "_{!s}_ - {!s}"
+enumerado = "#{!s}: {!s}"
 
-def showAlbum(album):
-    return '_' + album['name'] + "_ - " + showArtistas(album['artists'])
+internacionais = "Últimos lançamentos internacionais:\n\n{!s}"
+recomendacoes = "Recomendações para quem gosta de {!s}:\n\n{!s}"
 
-def showAlbums(albums):
-    resposta = ""
-    for i, album in enumerate(albums):
-        resposta += "#" + str(i+1) + ": " + showAlbum(album) + "\n\n"
-    return resposta
+erroPadrao = "Oops, algo deu errado :("
+erroBusca = "Não encontrei musicas ou artistas parecidos com {!s} :("
 
-def showMusica(musica):
-    return '_' + musica['name'] + "_ - " + showArtistas(musica['artists'])
+def showInline(itens):
+    last = (itens.pop(-1))['name']
+    if not itens:
+        return last
+    init = ", ".join([item['name'] for item in itens])
 
-def showMusicas(musicas):
-    resposta = ""
-    for musica in musicas:
-        resposta += showMusica(musica) + "\n\n"
-    return resposta
+    return " e ".join([init, last])
+
+def showItem(item):
+    return padrao.format(item['name'],showInline(item['artists']))
+
+def showItensEnumerados(itens):
+    return "\n\n".join([enumerado.format(i+1,showItem(item)) for i, item in enumerate(itens)])
+
+def showItens(itens):
+    return "\n\n".join([(showItem(item)) for item in itens])
