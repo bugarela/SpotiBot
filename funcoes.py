@@ -6,7 +6,9 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from fuzzywuzzy import fuzz
 
 import formatos
-import credenciais
+
+from dotenv import load_dotenv, find_dotenv
+load_dotenv('credenciais.env')
 
 client_credentials_manager = SpotifyClientCredentials()
 

@@ -4,7 +4,6 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 import os
-import credenciais
 import funcoes
 
 import pprint
